@@ -1,9 +1,14 @@
 import "./styles/global.css"
 
+// Components
+import { Quiz } from "./components/Quiz"
+
 function App() {
 
   return (
-      <h1>Hello world</h1>
+      <Quiz/>
+
+      
   )
 }
 
