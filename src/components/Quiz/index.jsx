@@ -5,6 +5,8 @@ import styles from "./styles.module.css"
 import { QuestionAnswer } from "../QuestionAnswer"
 import { useState } from "react";
 import { Button } from "../Button";
+import { Result } from "../Result";
+import { ProgressBar } from "../ProgressBar"
 
 const QUESTIONS = [
     {
@@ -38,6 +40,10 @@ export function Quiz() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0)
     const [isCurrentQuestionAnswered , setIsCurrentQuestionAnswered] = useState(false)
+    const [isTakingQuiz, setIsTakingQuiz] = useState(true)
+
+    const currentQuestionNumber = currentQuestionIndex + 1;
+    const quizSize = QUESTIONS.length
 
 const handleAnswerQuestion = (event, question, answer) => {
     if(isCurrentQuestionAnswered) {
@@ -57,21 +63,35 @@ const handleAnswerQuestion = (event, question, answer) => {
     }
 
     const handleNextQuestion = () => {
-        if(currentQuestionIndex + 1 < QUESTIONS.length){
+        if(currentQuestionIndex + 1 < quizSize){
             setCurrentQuestionIndex(index => index + 1)
-        } 
+        } else {
+            setIsTakingQuiz(false)
+        }
 
         setIsCurrentQuestionAnswered(false)
     }
 
+    const handleTryAgain = () => {
+        setIsTakingQuiz(true)
+        setCorrectAnswersCount(0)
+        setCurrentQuestionIndex(0)
+    }
+
     const currentQuestion = QUESTIONS[currentQuestionIndex];
+    const navigationButtonText = currentQuestionNumber === quizSize ? "Ver Resultado" : "Próxima Pergunta"
 
     return (
         <div className={styles.container}>
             <div className={styles.card}>
-                <div className={styles.quiz}>
+                {isTakingQuiz ? (
+                    <div className={styles.quiz}>
+                        < ProgressBar size={quizSize} currentStep={currentQuestionNumber}/>
+
                     <header className={styles.quizHeader}>
-                        <span className={styles.questionCount}>PERGUNTA 1/3</span>
+                        <span className={styles.questionCount}>
+                            PERGUNTA {currentQuestionNumber}/{quizSize}
+                        </span>
                         <p className={styles.question}> 
                             {currentQuestion.question}   
                         </p>
@@ -88,9 +108,18 @@ const handleAnswerQuestion = (event, question, answer) => {
                         ))}
                     </ul>
                     {isCurrentQuestionAnswered && (
-                        <Button onClick={handleNextQuestion}>Próxima Pergunta</Button>
+                        <Button onClick={handleNextQuestion}>
+                            {navigationButtonText}
+                        </Button>
                     )}
                 </div>
+                ) : (
+                    <Result 
+                    correctAnswersCount={correctAnswersCount}
+                    quizSize={quizSize}
+                    handleTryAgain={handleTryAgain}
+                    />
+                )}
             </div>
             
         </div>
