@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "../Button";
 import { Result } from "../Result";
 import { ProgressBar } from "../ProgressBar"
+import { Test } from "../Test";
 
 const QUESTIONS = [
     {
@@ -49,6 +50,7 @@ const handleAnswerQuestion = (event, question, answer) => {
     if(isCurrentQuestionAnswered) {
             return;
         }
+        
     const isCorrectAnswer = question.correctAnswer === answer
 
     const resultClassName = isCorrectAnswer ? styles.correct : styles.incorrect
@@ -87,6 +89,8 @@ const handleAnswerQuestion = (event, question, answer) => {
                 {isTakingQuiz ? (
                     <div className={styles.quiz}>
                         < ProgressBar size={quizSize} currentStep={currentQuestionNumber}/>
+
+                        <Test name="Daniel Patino" />
 
                     <header className={styles.quizHeader}>
                         <span className={styles.questionCount}>
