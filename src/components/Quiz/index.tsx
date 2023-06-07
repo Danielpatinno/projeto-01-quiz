@@ -3,13 +3,19 @@ import styles from "./styles.module.css"
 
 // components
 import { QuestionAnswer } from "../QuestionAnswer"
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import { Button } from "../Button";
 import { Result } from "../Result";
 import { ProgressBar } from "../ProgressBar"
-import { Test } from "../Test";
 
-const QUESTIONS = [
+export interface Question {
+    id:number
+    question:string
+    answer:string[]
+    correctAnswer:string
+}
+
+const QUESTIONS:Question[] = [
     {
         id: 1,
         question: "Qual é o meu nome ?",
@@ -46,7 +52,9 @@ export function Quiz() {
     const currentQuestionNumber = currentQuestionIndex + 1;
     const quizSize = QUESTIONS.length
 
-const handleAnswerQuestion = (event, question, answer) => {
+const handleAnswerQuestion = (
+    event: MouseEvent<HTMLButtonElement>, question:Question, 
+    answer:string):void => {
     if(isCurrentQuestionAnswered) {
             return;
         }
@@ -89,8 +97,6 @@ const handleAnswerQuestion = (event, question, answer) => {
                 {isTakingQuiz ? (
                     <div className={styles.quiz}>
                         < ProgressBar size={quizSize} currentStep={currentQuestionNumber}/>
-
-                        <Test name="Daniel Patino" />
 
                     <header className={styles.quizHeader}>
                         <span className={styles.questionCount}>

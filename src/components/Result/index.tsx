@@ -1,7 +1,13 @@
 import S from "./styles.module.css"
 import { Button } from "../Button";
 
-export function Result (props) {
+interface ResultProps {
+    correctAnswersCount:number
+    quizSize:number
+    handleTryAgain: () => void
+}
+
+export function Result (props:ResultProps) {
 
     return (
         <div className={S.container}>
@@ -11,7 +17,7 @@ export function Result (props) {
                 Você acertou {props.correctAnswersCount} de {props.quizSize} perguntas!
             </h2>
 
-            <Button onclick={props.handleTryAgain}>Tente Novamente</Button>
+            <Button onClick={props.handleTryAgain}>Tente Novamente</Button>
         </div>
     )
 }
